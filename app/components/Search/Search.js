@@ -6,14 +6,16 @@ import Helpers from '../../utils/helpers.js';
 export default class Search extends React.Component {
 	//This is the es6 way of getInitialState
 	constructor(props) {
-	        super(props);
-	        this.handleSubmit = this.handleSubmit.bind(this);
-	        this.state = {
-	        	results: []
-	        };
-	    }
+        super(props);
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.state = {
+        	results: [],
+        	button: 'Save'
+        };
+    }
 
 	handleSubmit(body) {
+		console.log('submitted')
 		Helpers.getInfo(body)
 		.then(function(res){
 			console.log(res)
@@ -26,8 +28,8 @@ export default class Search extends React.Component {
 	render() {
 		return (
 			<div className="main-container">
-				<Query  submit={this.handleSubmit} />
-				<Results results={this.state.results} />
+				<Query submit={this.handleSubmit}/> 
+				<Results title="Results" button={this.state.button} target="#myModal"  results={this.state.results} />
 			</div>
 		)
 	}

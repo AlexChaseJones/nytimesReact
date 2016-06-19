@@ -1,6 +1,7 @@
 /*Axios is a convenient NPM package for performing HTTP requests*/
 var axios = require('axios');
 var moment = require('moment');
+// var mongoose = require('mongoose');
 
 function buildURL(body){
 	var today = moment().format('YYYYMMDD')
@@ -24,7 +25,33 @@ var helpers = {
 	getInfo: function(body){
 		var urlQuery = buildURL(body);
 		return axios.get(urlQuery).then(function(res){
-			return res.data.response.docs;			
+			return res.data.response.docs.map(function(doc){
+				return {
+					_id			: Math.random(),
+					headline	: doc.headline.main,
+					published	: doc.pub_date,
+					url			: doc.web_url
+				}
+			});			
+		})
+	},
+	getData: function(body){
+		return axios.get('/getData').then(function(res){
+			return res;
+		})
+	},
+	addData: function(title, date, url){
+		url = encodeURIComponent(url)
+		var dataUrl = '/addData/' + title +'/' + date +'/' + url;
+		return axios.post(dataUrl).then(function(res){
+			console.log(title)
+			return res;
+		})
+	},
+	deleteData: function(id){
+		var urlQuery = 'deleteData/' + id;
+		return axios.post(urlQuery).then(function(res){
+			return res
 		})
 	}
 };

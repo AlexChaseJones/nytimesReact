@@ -1,52 +1,63 @@
-var express = require('express')
-var path = require('path')
-var compression = require('compression')
+var express = require('express');
+var path = require('path');
+var logger = require('morgan');
+var mongoose = require('mongoose');
+var cookieParser = require('cookie-parser');
+var bodyParser = require('body-parser');
+var routes = require('./controllers/appController');
+var favicon = require('favicon');
+mongoose.connect('mongodb://localhost:27017/NYTimes');
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() {
+  console.log('Connected!')
+});
 
-import React from 'react'
-import { renderToString } from 'react-dom/server'
-import { match, RouterContext } from 'react-router'
-import routes from './config/routes'
+var app = express();
 
-var app = express()
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'hbs');
 
-app.use(compression())
-app.use(express.static(__dirname))
+// uncomment after placing your favicon in /public
+app.use(logger('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
 
 //send all requests to index.html so browserHistory in React Router works
-app.get('*', function(req, res) {
-	match({ routes: routes, location: req.url }, (err, redirect, props) => {
-	    if (err) {
-	      // there was an error somewhere during route matching
-	      res.status(500).send(err.message)
-	    } else if (redirect) {
+app.use('/', routes)
 
-	      res.redirect(redirect.pathname + redirect.search)
-	    } else if (props) {
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+  var err = new Error('Not Found');
+  err.status = 404;
+  next(err);
+});
 
-	      const appHtml = renderToString(<RouterContext {...props}/>)
-	      res.send(renderPage(appHtml))
-	    } else {
+// error handlers
 
-	      res.status(404).send('Not Found')
-	    }
-	  })
-})
-
-function renderPage(appHtml){
-	return `
-		<!DOCTYPE html>
-		<html lang="en">
-		<meta charset="UTF-8">
-		<title>Github Profile Viewer</title>
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-		<div id="app">${appHtml}</div>
-		<script src="bundle.js"></script>
-	`
+// development error handler
+// will print stacktrace
+if (app.get('env') === 'development') {
+  app.use(function(err, req, res, next) {
+    res.status(err.status || 500);
+    res.render('error', {
+      message: err.message,
+      error: err
+    });
+  });
 }
 
+// production error handler
+// no stacktraces leaked to user
+app.use(function(err, req, res, next) {
+  res.status(err.status || 500);
+  res.render('error', {
+    message: err.message,
+    error: {}
+  });
+});
 
-
-var PORT = process.env.PORT || 8080
-app.listen(PORT, function(){
-	console.log('Server running at localhost:'+PORT)
-})
+module.exports = app;

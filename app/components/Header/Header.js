@@ -1,6 +1,7 @@
 import React from 'react';
 import Nav from './Nav';
-import Jumbotron from './Jumbotron'
+import Jumbotron from './Jumbotron';
+import Modal from './Modal'
 
 export default class Header extends React.Component {
 	render() {
@@ -10,6 +11,7 @@ export default class Header extends React.Component {
 					<Nav />
 					<Jumbotron />
 					{this.props.children}
+					<Modal />
 				</div>
 			</div>
 		)

@@ -1,11 +1,15 @@
 import React from 'react';
-import Result from './Result';
+import Result from '../Result';
 
 export default class Results extends React.Component {
+	constructor(props) {
+		super(props)
+	}
+
 	render() {
 		let rows = [];
 		this.props.results.forEach((article) => {
-			rows.push(<Result title={article.headline.main} date={article.pub_date} url={article.web_url} key={Math.random()}/>)
+			rows.push(<Result update={this.props.update} target={this.props.target} button={this.props.button} title={article.headline} date={article.published} url={article.url} id={article._id} Key={article._id}/>)
 		})
 		if (rows.length == 0) {
 			rows = (
@@ -27,7 +31,7 @@ export default class Results extends React.Component {
 								<h1 className="panel-title">
 									<strong>
 										<i className="fa fa-list-alt" />
-										{' '   /*...Adds a space*/} Results
+										{' '} {this.props.title} 
 									</strong>
 								</h1>
 							</div>

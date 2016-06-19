@@ -7,8 +7,7 @@ export default class Query extends React.Component {
 	}
 
 	handleSubmit(event) {
-		event.preventDefault();
-		
+		event.preventDefault		
 		let body = {
 			q: 	event.target.elements[0].value,
 			s: 	event.target.elements[1].value,
@@ -53,10 +52,10 @@ export default class Query extends React.Component {
 												End Year
 											</strong>
 										</h4>
-										<input type="text" className="form-control" id="end" />
+										<input placeholder="...Today" type="text" className="form-control" id="end" />
 									</div>
 									<div className="pull-right">
-										<button type="submit" className="btn btn-danger">
+										<button type="submit" className="btn btn-info">
 											<h4>Search</h4>
 										</button>
 									</div>
