@@ -6,7 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var routes = require('./controllers/appController');
 var favicon = require('favicon');
-mongoose.connect('mongodb://localhost:27017/NYTimes');
+mongoose.connect('mongodb://'+process.env.SECRET_USERNAME+':'+process.env.SECRET_PASSWORD+'@ds013024.mlab.com:13024/project_data');
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
