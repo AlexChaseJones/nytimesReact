@@ -20,6 +20,7 @@
     "compression": "^1.6.2",
     "cookie-parser": "^1.4.3",
     "express": "^4.13.4",
+    "favicon": "0.0.2",
     "handlebars": "^4.0.5",
     "hbs": "^4.0.0",
     "history": "^1.13.1",
