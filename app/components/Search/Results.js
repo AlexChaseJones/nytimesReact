@@ -11,12 +11,22 @@ export default class Results extends React.Component {
 		this.props.results.forEach((article) => {
 			rows.push(<Result update={this.props.update} target={this.props.target} button={this.props.button} title={article.headline} date={article.published} url={article.url} id={article._id} Key={article._id}/>)
 		})
-		if (rows.length == 0) {
+		if (rows.length == 0 && this.props.button == "Save") {
 			rows = (
 				<li className="list-group-item">
 					<h3>
 						<span>
 							<em>Enter Search Terms to Begin...</em>							
+						</span>
+					</h3>
+				</li>
+			)
+		} else if (rows.length == 0 && this.props.button == "Delete") {
+			rows = (
+				<li className="list-group-item">
+					<h3>
+						<span>
+							<em>No Saved Articles...</em>							
 						</span>
 					</h3>
 				</li>
