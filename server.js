@@ -1,4 +1,5 @@
 var express = require('express');
+require('dotenv').config(); //For Local Content Variables
 var path = require('path');
 var logger = require('morgan');
 var mongoose = require('mongoose');
